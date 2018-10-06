@@ -1,0 +1,119 @@
+---
+title: "Research Results"
+author: "Ian Nyeme"
+date: "July 29, 2018"
+output:
+  word_document: default
+  html_document: default
+editor_options:
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+setting working directory
+```{r}
+setwd("E:/Data Manipulation/Ian Nyeme/")
+```
+
+
+required packages
+
+
+```{r}
+require(haven)
+require(tidyverse)
+require(lubridate)
+```
+
+read the questionnaire file
+```{r}
+# read the file
+db = read_csv("Questionnaire_response_29072018.csv")
+
+# remove unwanted columns
+db = db[,-c(8,59:61)]
+
+da = db%>%select(-c('X8', 'X59','X60', 'X61'))
+# rm(list = setdiff(ls(), "db"))
+```
+
+check the structure of the data frame and change the variable names into questions
+```{r}
+glimpse(db)
+variable.names = names(db)
+
+names(db) = rep(paste("q",1:57, sep = ""))
+
+index = data_frame(variable.names, names(db))%>%select(question = `names(db)`, long.question = variable.names)
+
+
+```
+
+```{r}
+
+
+db%>%select(q4, q2)%>%table()
+
+db%>%select(q4, q2)%>%table()%>%barplot(col = 2:3)
+
+db%>%select(q4, q2)%>%table()%>%prop.table()
+
+db%>%select(q2, q4)%>%table()%>%as.matrix()%>%prop.test()
+```
+
+You are trying to address the number of respondents and whether they have ever used the design and building
+
+```{r}
+
+# ggplot(data = db, aes(x =`Which category below define you?`), col = 1)+geom_bar(fill = "grey80", col = "black")+theme_bw()
+
+ggplot(data = db, aes(x =`Which category below define you?`, 
+                      fill = `Have you ever used Design & Build in any of your projects?` ), 
+       col = 1)+
+  geom_bar()+theme_bw()+
+  scale_fill_discrete(name = NULL)+
+  labs(x = NULL, y = "Number of Respondents")+
+  theme(legend.position = c(.9,.9),
+        legend.background = element_rect(colour = 1))
+  
+
+```
+
+```{r}
+table(db$`Which category below define you?`, db$`Have you ever used Design & Build in any of your projects?`)
+  
+
+
+table(db$`Which category below define you?`, db$`Have you ever used Design & Build in any of your projects?`)%>%as.matrix()%>%prop.table()
+
+table(db$`Which category below define you?`, db$`Have you ever used Design & Build in any of your projects?`)%>%as.matrix()%>%prop.test()
+```
+
+```{r}
+require(ggsci)
+
+labelled(db$q9, labels = c(Low = 1, Moderate = 2, High = 3, Very.High = 4))%>%
+  as_factor()%>%
+  table()%>%
+  barplot()
+
+db%>%
+  mutate(aa = labelled(db$q9, labels = c(Low = 1, Moderate = 2, High = 3, Very.High = 4))%>%
+  as_factor())%>%
+  na.omit()%>%
+  ggplot(aes(x = aa, fill = q2))+
+  geom_bar(width = .7, col = 1)+
+  scale_fill_jco(name ="Professional", 
+                      limits = c("Consultant","Contractor", "Client"))+
+  scale_x_discrete(label = c("Low", "Moderate", "High", "Very High"))+
+  theme(panel.background = element_rect(colour = 1), 
+        legend.position = c(.85,.85), 
+        legend.background = element_rect(colour = 1))+
+  labs(x = NULL, 
+       y = "Number of Respondents", 
+       subtitle = "The design and building model ensure centainity of final projec cost to be high?", title = "")
+```
+

@@ -1,0 +1,312 @@
+---
+title: "Research Results"
+author: "Ian Nyeme"
+date: "September 22, 2018"
+output: 
+      bookdown::word_document2: #html_document2: default
+editor_options: 
+  chunk_output_type: inline
+link-citations: yes
+csl: havard.csl
+bibliography: reference.bib
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+
+```{r}
+setwd("E:/Data Manipulation/Ian Nyeme/")
+```
+
+
+
+```{r, warning=FALSE, comment= FALSE, message=FALSE}
+require(haven)
+require(tidyverse)
+require(lubridate)
+require(ggsci)
+require(RColorBrewer)
+```
+
+
+```{r}
+# read the file
+db = readxl::read_excel("Questionnaire responses 12082018.xlsx", sheet = 1)
+
+
+code1 = c("Strongly Disagree", "Disagree", "Agree", "Strongly Agree")
+code2 = c("Very low", "Low", "Moderate", "High", "Very High")
+```
+
+check the structure of the data frame and change the variable names into questions
+```{r}
+# glimpse(db)
+variable.names = names(db)
+
+names(db) = rep(paste("q",1:57, sep = ""))
+
+index = data_frame(variable.names, names(db))%>%select(question = `names(db)`, long.question = variable.names)
+
+
+```
+
+# Chapter I
+# chapter II
+# Chapter III
+# Chapter IV
+## Introduction
+In chapter 3 the research methods and instruments used for collecting data for this study were discussed. This chapter presents the results of stakeholders in construction industry particularly road sector in Tanzania. The data were obtained through a  questionnaire on Design and Build procurement system. Therefore, this chapter present the results of the questionnaire and interpretation will be covered in Chapter 5 of this Study. The outline of chapter four is as follows:
+
++ A summary of biodata of the respondents
++ The results of the data collected for the different sections. They are grouped into issues that are deemed suitable to address the research objectives in the next chapter.
+    1. Current practice of Design and Build procurement system on road works
+Challenges of Traditional procurement system
+    2. Barriers of shifting from Traditional procurement system to Design and Build procurement system
+    3. Controlling costs escalation by using Design and Build procurement system on road works [@tidyverse]
+
+The survey questionnaire was administered to the respondents by using an online google forms. The online questionnaire enabled each respondent to complete the questionnaire electronically in full and independent of each other. This questionnaire was accompanied by covering letter, describing the purpose of the research. It also described how the results are used and ensure confidentiality of respondents. This helped in eliminating doubt and question that respondents may have had. The respondents were given four weeks to complete the questionnaire. After closing date all responses were gathered to prepare a summary of the research findings.
+
+## Composition of Respondents
+Table \@ref(tab:tab1) provides a brief profile of the people who responded to the questionnaire. The respondent were also asked to identify their professional, age, current job position and experience in construction industry. Furthermore, they were asked if they have ever used Design and Build procurement system in their whole period engaged in construction sector.
+
+```{r tab1}
+respondents = data.frame(Respondents = c("A", "B", "C"),
+                          Displine = c("Clients", "Consultants", "Contractors"),
+                         Positions = c("Project Managers, Project Engineers, Senior Quantity Surveyors, Project Quantity Surveyors", "Project Managers, Project Engineers, Senior Quantity Surveyors, Project Quantity Surveyors","Project Managers, Project Engineers,  Senior Quantity Surveyors, Project Quantity Surveyors"))
+
+knitr::kable(respondents, align = "c", caption = "Respondents Profiles")
+```
+
+Table \@ref(tab:tab2) shows a breakdown of the population (total of Clients, Consultants and Contractors), and percentage of group that questionnaire was sent to and a percentage of those who responded. Of the 150 questionnaires sent to different groups in the construction sector, about 40 percent (60 people) responded (Table 4.2). The contribution of each construction group is presented in figure 4.1. Among 60 respondents 21(14%) were Clients, 21(14%) were professional Consultants and 18 (12%) were Contractors.
+
+### Composition of Respondents (Composition by discipline)
+
+```{r tab2}
+response = data.frame(Respondents = c("Clients", "Consultants", 
+                                      "Contractors", "Total"),
+           targeted = c(50,50,50, 150),
+           respondents = c(21,21,18,60))%>%
+  mutate(rate = respondents/60*100)
+
+
+knitr::kable(response, align = "c", col.names = c("Respondents", "Targeted Count", "Respondent Count", "Response Rate Percentage)"), caption = "Summary of Respondents")
+```
+
+
+```{r fig1, fig.cap="A pie chart showing contribution of each construction group"}
+pie(x = c(35,35,30), labels = c("Clients", "Consultants", 
+                                      "Contractors"))
+
+```
+
+### Composition of respondents by age profile
+Respondents were asked in  questionnaire to indicate their respective age bracket in which they fall. Table \@ref(tab:tab3) summarize the number of respondents with reference to their age group. The majority of the respondents comprise 43.3% (n =26) aged between 31 and 35 years (Table 4.3). This was followed by respondents with age between  36-40 (18.3%),   above 45 (16.7%), below 31 (11.7%) and respondents with age between 41-45 had the lowest percentage (10%). The above composition has been graphically presented in for more clarity in a pie chart as illustrated in a figure \@ref(fig:fig2) 
+```{r tab3}
+
+age.group = data.frame(range = c("Below 31", "31-35", "36-40",
+                                 "41-45", "Above 45"),
+                       Count =c(7,26,11,6,6))%>%
+  mutate(sum = sum(Count), percentage = Count/sum*100)%>%
+  select(-sum)
+
+knitr::kable(age.group, digits = 2, align = "c", caption = "Age Profile", col.names = c("Age Range", "Count", "Percentage of Respondent"))
+```
+
+
+```{r fig2, fig.cap="Pie chart showing age profle"}
+
+pie(x = age.group$percentage, labels = age.group$range)
+
+```
+
+### Composition of respondents by experience in the Construction Industry
+Table \@ref(tab:tab4) shows experience of respondents in Construction Industry. Respondents had extensive experience in the construction industry of which 31.7% (n =19) had worked in the industry for between 6 and 9 years. This is followed by respondents with 3-5 year experience (28.3%), followed by respondents with 10-15 year experience (18.3%), respondents with less than 3years experience (13.3%). Respondents above 15 year experience contributed 8.3% only (Table \@ref(tab:tab4)).  Figure \@ref(fig:fig3) illustrates this composition further.
+
+```{r tab4}
+experience = data.frame(range = c("less than 3 yrs","3-5","6-9","10-15",
+                                  "above 15"),
+                        Count = c(8,17,19,11,5))%>%
+  mutate(sum = sum(Count), percentage = Count/sum*100)%>%
+  select(-sum)
+
+knitr::kable(experience, digits = 2, align = "c", caption = "Experience of Respondents", col.names = c("Range (Years)", "Count", "Percentage"))
+
+```
+
+
+```{r fig3, fig.cap=" A pie chart showing experience of respondents"}
+pie(x = experience$percentage, labels = experience$range)
+
+```
+
+
+### Composition by familiarity with Design and Build procurement system
+Table \@ref(tab:tab5) shows familiarity of respondents to use Design and Build procurement system. Of 60 respondents, a good number of 77% are familiar with Design and Build procurement system and 23% are unfamiliar with the system (Table \@ref(tab:tab5)).
+```{r tab5}
+familiarity = data.frame(system =c("yes","no"),
+                         Count = c(46,14))%>%
+  mutate(sum = sum(Count), percentage = Count/sum*100)%>%
+  select(-sum)
+
+knitr::kable(familiarity, align = "c", digits = 2, caption = "Familiarity with Design and Build Procurement System", col.names = c("Co. has used D&B procurement system",  "Count", "Percentage"))
+```
+
+Of 60 respondents, 53% are using the system full time and only 32% use it occasionally (Table \@ref(tab:tab6)).   15% never answered the question.Professional Consultants, Clients and Contractors who have used the D&B procurement system constitute 76.7% (n =46) of the total respondents that responded to this question. 
+Professional Consultants, Clients and Contractors who have partially used D&B constitute to 37.3% (n =19) of the total disciplines that responded to the questionnaire. 32 Only a total of 62.7% (n =32) confirmed to have used Design and Build procurement system in full. The above composition has been graphically presented in for more clarity in a pie chart as illustrated in a figure \@ref(fig:fig4) 
+
+```{r tab6}
+timing  = data.frame(system = c("in full","in part", "n/a"),
+                     Count = c(32,19,9))%>%
+  mutate(sum = sum(Count), percentage = Count/sum*100)%>%
+  select(-sum)
+  
+  knitr::kable(timing, align = "c", digits = 2, caption = "Time spent with Design and Build Procurement System", col.names = c("Co. has used D&B procurement system",  "Count", "Percentage"))
+```
+
+```{r fig4, fig.cap="Pie chart"}
+pie(x = timing$percentage, labels = timing$system)
+
+```
+
+## Presentation of Findings - Current of Design and Build Procurement System on roadwork projects in Tanzania
+The second part of the questionnaire consisting of five questions aimed at measure the current practice of Design and Build procurement system on roadwork projects in Tanzania. The questionnaire was drawn by using Likert scale using a rating of "1" to "4" where 1 means Strongly Disagree, 2 means Disagree, 3 means Agree and 4 means Strongly Agree. The following current practise of Design and Build procurement system were received for 60 valid responses as indicated in Table \@ref(tab:tab7). The outlined responses has further been graphically presented for clarity in a bar charts as illustrated in Figure \@ref(fig:fig5)a and \@ref(fig:fig5)b.
+
+```{r tab7}
+dba = data.frame(practice = c("It provides single point of contact between the Client and Contractor hence unsure the efficient utilization of resources on projects",
+                             "It ensures certainty of final project cost to be high",
+                             "It  ensures project management efficiency is improved due to improved communication",
+                             "It increases effectiveness and efficiency as the structure of the organization is simple",
+                             "It ensures the designing and construction risks are transferred to the Contractor hence improve performance standards"),
+                sd = c(1,10,2,3,1),
+                d = c(8,24,7,9,9), 
+                a = c(36,15,32,29,23),
+                sa = c(13,10,17,17,25))
+
+knitr::kable(dba, align = "l", digits = 2, caption = "Title searching....", col.names = c("Title....", "Strongely Disagree", "Disagree", "Agree", "Strongly Agree"))
+```
+
+
+```{r fig5, fig.cap="Title needed", comment="",warning=F,message=F}
+
+fig4.3a = ggplot(data = db%>%group_by(q8,q2)%>%summarise(perc = n())%>%
+         mutate(perc = perc/60*100),aes(x = q8, y = perc))+
+  geom_col(aes(fill = q2), col = 1)+
+  scale_x_discrete(limits = code1)+
+    scale_fill_viridis_d(name = "Respondents")+
+  scale_y_continuous(breaks = seq(0,60,10))+
+  theme_bw()+
+  theme(panel.background = element_rect(colour = 1, fill = NA),
+        axis.text = element_text(colour = 1, size = 10),
+        axis.title = element_text(colour = 1, size = 12),
+        legend.position = c(0.2,0.85),  
+        legend.background = element_rect(colour = "black"),
+        panel.grid.minor.y = element_blank())+
+  labs(x = NULL, y = "Percentage of Respondents") 
+  
+
+  fig4.3b = ggplot(data = db%>%group_by(q10,q2)%>%summarise(perc = n())%>%
+           mutate(perc = perc/60*100),aes(x = q10, y = perc))+
+  geom_col(aes(fill = q2), col = 1)+
+  scale_x_discrete(limits = code1)+
+    scale_fill_viridis_d(name = "Respondents")+
+  scale_y_continuous(breaks = seq(0,50,8))+
+  theme_bw()+
+  theme(panel.background = element_rect(colour = 1, fill = NA),
+        axis.text = element_text(colour = 1, size = 10),
+        axis.title = element_text(colour = 1, size = 12),
+        legend.position = "none",  
+        legend.background = element_rect(colour = "black"),
+        panel.grid.minor.y = element_blank())+
+  labs(x = NULL, y = "Percentage of Respondents")
+  
+  
+  cowplot::plot_grid(fig4.3a, fig4.3b, labels = c("a)", "b)"), label_x = 0.9, label_y =.98 )
+  # ggsave("fig4_3.png", dpi = 600)
+  
+```
+
+From Table \@ref(tab:tab7) and figures \@ref(fig:fig5)a and \@ref(fig:fig5)b the following observation were made:
+
++ 	% (n=49) Professional Consultant, Client and Contractor agreed that provides single point of contact between the Client and Contractor hence ensure the efficient utilization of resources on projects. On the Contrary...% (n=9) disagree.
+
++ 	% (n=25) Professional Consultant, Client and Contractor agreed that Design and Build procurement system ensures certainty of final project cost to be high. On the Contrary..% (n=34) disagree.
+
++	% (n=49) Professional Consultant, Client and Contractor agreed that Design and Build procurement system ensures project management efficiency is improved due to improved communication. On the Contrary..% (n=9) disagree.
+
++	(n=46) Professional Consultant, Client and Contractor agreed that Design and Build procurement system increases effectiveness and efficiency as the structure of the organization is simple. On the Contrary...% (n=12) disagree.
+
++	(n=48) Professional Consultant, Client and Contractor agreed that Design and Build procurement system ensures the designing and construction risks are transferred to the Contractor hence improve performance standards. On the Contrary..% (n=10) disagree.
+
+
+## Presentation of Findings - challenges caused by traditional procurement system on roadworks project in Tanzania
+The second issue addressed by the questionnaire was to determine the challenges caused by traditional procurement system on roadworks project in Tanzania. Section C has nine statements aimed at providing data to answer this Research Question. Their responses were recorded in Table \@ref(tab:tab8). . The outlined responses has further been graphically presented for clarity in a bar charts as illustrated in Figure \@ref(fig:fig6)a and \@ref(fig:fig6)b.
+```{r tab8}
+challenges = data.frame(challenges = c("
+
+TP does not ensure cost certainty to the owner
+",
+                                       "Completion date is not rigid ",
+                                       "Stipulated price is not rigid",
+                                                                         "Design should be completed before tendering",
+                                       "Cost overrun due to new design and specification",
+                                       "Cost overrun due to quantities and variation of price factors",
+                                       "Responsibility of design is vested to the Client",
+                                       "Design changes impact price","Dispute occur between the owner and Contractor"),
+                        sd = c(6,4,3,4,2,3,5,2,3),
+                        d = c(8,9,8,3,5,8,6,4,9),
+                        a = c(26,18,16,2,8,10,6,8,22),
+                        sa = c(18,27,32,48,41,37,41,44,25))
+
+knitr::kable(challenges,col.names = c("Title","Strongly disagree","Disagree","Agree","Strongly agree"))
+                        
+```
+
+
+
+```{r fig6, fig.cap="Title needed", comment="",warning=F,message=F}
+
+fig4.3a = ggplot(data = db%>%
+                   mutate(q13 = replace(q13,q13==5,4)) %>%
+                   group_by(q13,q2)%>%summarise(perc = n())%>%
+         mutate(perc = perc/60*100),aes(x = q13, y = perc))+
+  geom_col(aes(fill = q2), col = 1)+
+  scale_x_discrete(limits = code1)+
+    scale_fill_viridis_d(name = "Respondents")+
+  # scale_y_continuous(breaks = seq(0,60,10))+
+  theme_bw()+
+  theme(panel.background = element_rect(colour = 1, fill = NA),
+        axis.text = element_text(colour = 1, size = 10),
+        axis.title = element_text(colour = 1, size = 12),
+        legend.position = c(0.2,0.85),  
+        legend.background = element_rect(colour = "black"),
+        panel.grid.minor.y = element_blank())+
+  labs(x = NULL, y = "Percentage of Respondents") 
+  
+
+  fig4.3b = ggplot(data = db%>%
+                   mutate(q18 = replace(q18,q18==5,4)) %>%
+                     group_by(q18,q2)%>%summarise(perc = n())%>%
+           mutate(perc = perc/60*100),aes(x = q18, y = perc))+
+  geom_col(aes(fill = q2), col = 1)+
+  scale_x_discrete(limits = code1)+
+    scale_fill_viridis_d(name = "Respondents")+
+  # scale_y_continuous(breaks = seq(0,50,8))+
+  theme_bw()+
+  theme(panel.background = element_rect(colour = 1, fill = NA),
+        axis.text = element_text(colour = 1, size = 10),
+        axis.title = element_text(colour = 1, size = 12),
+        legend.position = "none",  
+        legend.background = element_rect(colour = "black"),
+        panel.grid.minor.y = element_blank())+
+  labs(x = NULL, y = "Percentage of Respondents")
+  
+  
+  cowplot::plot_grid(fig4.3a, fig4.3b, labels = c("a)", "b)"), label_x = 0.9, label_y =.98 )
+  # ggsave("fig4_3.png", dpi = 600)
+  
+```
+
+## Reference

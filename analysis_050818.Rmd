@@ -1,0 +1,438 @@
+---
+title: "Research Results"
+author: "Ian Nyeme"
+date: "July 29, 2018"
+output:
+  word_document: default
+  html_document: default
+editor_options:
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R version
+The analysis was done in R environmet using version 3.4.4 released on 2018-03-15, which can be download [here](http://cran.us.r-project.org/). The scripts work with this version or later
+
+
+
+setting working directory
+```{r}
+setwd("E:/Data Manipulation/Ian Nyeme/")
+```
+
+
+required packages
+
+```{r}
+require(haven)
+require(tidyverse)
+require(lubridate)
+require(ggsci)
+require(RColorBrewer)
+```
+
+read the questionnaire file
+```{r}
+# read the file
+db = read_csv("Questionnaire_response_04082018.csv")
+
+# remove unwanted columns
+db = db[,-c(8,59:61)]
+
+# da = db%>%select(-c('X8', 'X59','X60', 'X61'))
+# rm(list = setdiff(ls(), "db"))
+
+code1 = c("Strongly Disagree", "Disagree", "Agree", "Strongly Agree")
+code2 = c("Very low", "Low", "Moderate", "High", "Very High")
+```
+
+check the structure of the data frame and change the variable names into questions
+```{r}
+glimpse(db)
+variable.names = names(db)
+
+names(db) = rep(paste("q",1:57, sep = ""))
+
+index = data_frame(variable.names, names(db))%>%select(question = `names(db)`, long.question = variable.names)
+
+
+```
+
+```{r}
+
+
+db%>%select(q4, q2)%>%table()
+
+db%>%select(q4, q2)%>%table()%>%barplot(col = 2:3)
+
+db%>%select(q4, q2)%>%table()%>%prop.table()
+
+db%>%select(q2, q4)%>%table()%>%as.matrix()%>%prop.test()
+```
+
+## Objectives
+
+### First objective: 
+To determine if design and build contract can improve project performance on  roadworks in Tanzania
+```{r}
+db$q2 = as.factor(db$q2)
+
+#plot for question 8
+ggplot(data = db, aes(x = q8, fill = q2))+
+  geom_bar(col = 1)+
+  scale_x_discrete(limits = code1)+
+  # scale_fill_discrete(name = "Respondents")+
+  # scale_fill_brewer(name = "Respondents",palette = "Dark2")+
+  # scale_fill_jco(name = "Respondents")+
+  scale_fill_viridis_d(name = "Respondents")+
+  scale_y_continuous(breaks = seq(0,40,5))+
+  theme_bw()+
+  theme(legend.position = c(0.9,0.85),  
+        legend.background = element_rect(colour = "black"),
+        panel.grid.minor.y = element_blank())+
+  labs(x = NULL, y = "Number of Respondents", 
+       subtitle = " Does it provides single point of contact between the Client and Contractor hence ensure the efficient \nutilization of resources on projects?")
+  
+  
+```
+
+```{r}
+
+#plot for question 8
+ggplot(data = db, aes(x = q9, fill = q2))+
+  geom_bar(col = 1)+
+  scale_x_discrete(limits = code1)+
+  # scale_fill_discrete(name = "Respondents")+
+  # scale_fill_brewer(name = "Respondents",palette = "Dark2")+
+  # scale_fill_jco(name = "Respondents")+
+  scale_fill_viridis_d(name = "Respondents")+
+  scale_y_continuous(breaks = seq(0,25,5))+
+  theme_bw()+
+  theme(legend.position = c(0.9,0.85),  
+        legend.background = element_rect(colour = "black"),
+        panel.grid.minor.y = element_blank())+
+  labs(x = NULL, y = "Number of Respondents", 
+       subtitle = "It ensures certainty of final project cost to be high")
+  
+  
+```
+
+
+```{r}
+
+#plot for question 8
+ggplot(data = db, aes(x = q10, fill = q2))+
+  geom_bar(col = 1)+
+  scale_x_discrete(limits = code1)+
+  # scale_fill_discrete(name = "Respondents")+
+  # scale_fill_brewer(name = "Respondents",palette = "Dark2")+
+  # scale_fill_jco(name = "Respondents")+
+  scale_fill_viridis_d(name = "Respondents")+
+  scale_y_continuous(breaks = seq(0,35,6))+
+  theme_bw()+
+  theme(legend.position = c(0.9,0.85),  
+        legend.background = element_rect(colour = "black"),
+        panel.grid.minor.y = element_blank())+
+  labs(x = NULL, y = "Number of Respondents", 
+       subtitle = "It ensures project management efficiency is improved due to improved communication")
+  
+  
+```
+
+```{r}
+
+#plot for question 8
+ggplot(data = db, aes(x = q11, fill = q2))+
+  geom_bar(col = 1)+
+  scale_x_discrete(limits = code1)+
+  # scale_fill_discrete(name = "Respondents")+
+  # scale_fill_brewer(name = "Respondents",palette = "Dark2")+
+  # scale_fill_jco(name = "Respondents")+
+  scale_fill_viridis_d(name = "Respondents")+
+  scale_y_continuous(breaks = seq(0,30,5))+
+  theme_bw()+
+  theme(legend.position = c(0.9,0.85),  
+        legend.background = element_rect(colour = "black"),
+        panel.grid.minor.y = element_blank())+
+  labs(x = NULL, y = "Number of Respondents", 
+       subtitle = "It increases effectiveness and efficiency as the structure of the organization is simple")
+  
+  
+```
+
+```{r}
+
+#plot for question 8
+ggplot(data = db, aes(x = q12, fill = q2))+
+  geom_bar(col = 1)+
+  scale_x_discrete(limits = code1)+
+  # scale_fill_discrete(name = "Respondents")+
+  # scale_fill_brewer(name = "Respondents",palette = "Dark2")+
+  # scale_fill_jco(name = "Respondents")+
+  scale_fill_viridis_d(name = "Respondents")+
+  scale_y_continuous(breaks = seq(0,25,6))+
+  theme_bw()+
+  theme(legend.position = c(0.1,0.85),  
+        legend.background = element_rect(colour = "black"),
+        panel.grid.minor.y = element_blank())+
+  labs(x = NULL, y = "Number of Respondents", 
+       subtitle = "It ensures the designing and construction risks are transferred to the Contractor hence improve performance \nstandards")
+  
+  
+```
+
+### Second objective: 
+2. To investigate the current challenges caused by *traditional procurement system* on roadwork projects in Tanzania
+```{r}
+
+#plot for question 8
+ggplot(data = db%>%mutate(q13 = replace(q13,q13==5,4)), 
+       aes(x = q13, fill = q2))+
+  geom_bar(col = 1)+
+  scale_x_discrete(limits = code1)+
+  # scale_fill_discrete(name = "Respondents")+
+  # scale_fill_brewer(name = "Respondents",palette = "Dark2")+
+  # scale_fill_jco(name = "Respondents")+
+  scale_fill_viridis_d(name = "Respondents")+
+  # scale_y_continuous(breaks = seq(0,25,6))+
+  theme_bw()+
+  theme(legend.position = c(0.1,0.85),  
+        legend.background = element_rect(colour = "black"),
+        panel.grid.minor.y = element_blank())+
+  labs(x = NULL, y = "Number of Respondents", 
+       subtitle = "TPS does not ensure cost certainty to the owner?")
+  
+  
+```
+
+```{r}
+
+#plot for question 8
+ggplot(data = db%>%mutate(q14 = replace(q14,q14==5,4)), 
+       aes(x = q14, fill = q2))+
+  geom_bar(col = 1)+
+  scale_x_discrete(limits = code1)+
+  # scale_fill_discrete(name = "Respondents")+
+  # scale_fill_brewer(name = "Respondents",palette = "Dark2")+
+  # scale_fill_jco(name = "Respondents")+
+  scale_fill_viridis_d(name = "Respondents")+
+  # scale_y_continuous(breaks = seq(0,25,6))+
+  theme_bw()+
+  theme(legend.position = c(0.1,0.85),  
+        legend.background = element_rect(colour = "black"),
+        panel.grid.minor.y = element_blank())+
+  labs(x = NULL, y = "Number of Respondents", 
+       subtitle = "Completion date is not rigid")
+  
+  
+```
+
+
+```{r}
+
+#plot for question 8
+ggplot(data = db%>%mutate(q15 = replace(q15,q15==5,4)), 
+       aes(x = q15, fill = q2))+
+  geom_bar(col = 1)+
+  scale_x_discrete(limits = code1)+
+  # scale_fill_discrete(name = "Respondents")+
+  # scale_fill_brewer(name = "Respondents",palette = "Dark2")+
+  # scale_fill_jco(name = "Respondents")+
+  scale_fill_viridis_d(name = "Respondents")+
+  # scale_y_continuous(breaks = seq(0,25,6))+
+  theme_bw()+
+  theme(legend.position = c(0.1,0.85),  
+        legend.background = element_rect(colour = "black"),
+        panel.grid.minor.y = element_blank())+
+  labs(x = NULL, y = "Number of Respondents", 
+       subtitle = "Stipulated price is not rigid")
+  
+  
+```
+
+
+```{r}
+
+#plot for question 8
+ggplot(data = db%>%mutate(q16 = replace(q16,q16==5,4)), 
+       aes(x = q16, fill = q2))+
+  geom_bar(col = 1)+
+  scale_x_discrete(limits = code1)+
+  # scale_fill_discrete(name = "Respondents")+
+  # scale_fill_brewer(name = "Respondents",palette = "Dark2")+
+  # scale_fill_jco(name = "Respondents")+
+  scale_fill_viridis_d(name = "Respondents")+
+  # scale_y_continuous(breaks = seq(0,25,6))+
+  theme_bw()+
+  theme(legend.position = c(0.1,0.85),  
+        legend.background = element_rect(colour = "black"),
+        panel.grid.minor.y = element_blank())+
+  labs(x = NULL, y = "Number of Respondents", 
+       subtitle = "Design should be completed before tendering")
+  
+  
+```
+
+
+
+```{r}
+
+#plot for question 17
+ggplot(data = db%>%mutate(q17 = replace(q17,q17==5,4)), 
+       aes(x = q17, fill = q2))+
+  geom_bar(col = 1)+
+  scale_x_discrete(limits = code1)+
+  # scale_fill_discrete(name = "Respondents")+
+  # scale_fill_brewer(name = "Respondents",palette = "Dark2")+
+  # scale_fill_jco(name = "Respondents")+
+  scale_fill_viridis_d(name = "Respondents")+
+  # scale_y_continuous(breaks = seq(0,25,6))+
+  theme_bw()+
+  theme(legend.position = c(0.1,0.85),  
+        legend.background = element_rect(colour = "black"),
+        panel.grid.minor.y = element_blank())+
+  labs(x = NULL, y = "Number of Respondents", 
+       subtitle = "Cost overrun due to new design and specification")
+  
+  
+```
+
+
+
+```{r}
+
+#plot for question 18
+ggplot(data = db%>%mutate(q18 = replace(q18,q18==5,4)), 
+       aes(x = q18, fill = q2))+
+  geom_bar(col = 1)+
+  scale_x_discrete(limits = code1)+
+  # scale_fill_discrete(name = "Respondents")+
+  # scale_fill_brewer(name = "Respondents",palette = "Dark2")+
+  # scale_fill_jco(name = "Respondents")+
+  scale_fill_viridis_d(name = "Respondents")+
+  # scale_y_continuous(breaks = seq(0,25,6))+
+  theme_bw()+
+  theme(legend.position = c(0.1,0.85),  
+        legend.background = element_rect(colour = "black"),
+        panel.grid.minor.y = element_blank())+
+  labs(x = NULL, y = "Number of Respondents", 
+       subtitle = "Cost overrun due to quantities and variation of price factors")
+  
+  
+```
+
+
+
+```{r}
+
+#plot for question 19
+ggplot(data = db%>%mutate(q19 = replace(q19,q19==5,4)), 
+       aes(x = q19, fill = q2))+
+  geom_bar(col = 1)+
+  scale_x_discrete(limits = code1)+
+  # scale_fill_discrete(name = "Respondents")+
+  # scale_fill_brewer(name = "Respondents",palette = "Dark2")+
+  # scale_fill_jco(name = "Respondents")+
+  scale_fill_viridis_d(name = "Respondents")+
+  # scale_y_continuous(breaks = seq(0,25,6))+
+  theme_bw()+
+  theme(legend.position = c(0.1,0.85),  
+        legend.background = element_rect(colour = "black"),
+        panel.grid.minor.y = element_blank())+
+  labs(x = NULL, y = "Number of Respondents", 
+       subtitle = index[19,2])
+  
+  
+```
+
+```{r}
+
+#plot for question 20
+ggplot(data = db%>%mutate(q20 = replace(q20,q20==5,4)), 
+       aes(x = q20, fill = q2))+
+  geom_bar(col = 1)+
+  scale_x_discrete(limits = code1)+
+  # scale_fill_discrete(name = "Respondents")+
+  # scale_fill_brewer(name = "Respondents",palette = "Dark2")+
+  # scale_fill_jco(name = "Respondents")+
+  scale_fill_viridis_d(name = "Respondents")+
+  # scale_y_continuous(breaks = seq(0,25,6))+
+  theme_bw()+
+  theme(legend.position = c(0.1,0.85),  
+        legend.background = element_rect(colour = "black"),
+        panel.grid.minor.y = element_blank())+
+  labs(x = NULL, y = "Number of Respondents", 
+       subtitle = index[20,2])
+  
+  
+```
+
+
+
+```{r}
+
+#plot for question 21
+ggplot(data = db%>%mutate(q21 = replace(q21,q21==5,4)), 
+       aes(x = q21, fill = q2))+
+  geom_bar(col = 1)+
+  scale_x_discrete(limits = code1)+
+  # scale_fill_discrete(name = "Respondents")+
+  # scale_fill_brewer(name = "Respondents",palette = "Dark2")+
+  # scale_fill_jco(name = "Respondents")+
+  scale_fill_viridis_d(name = "Respondents")+
+  # scale_y_continuous(breaks = seq(0,25,6))+
+  theme_bw()+
+  theme(legend.position = c(0.1,0.85),  
+        legend.background = element_rect(colour = "black"),
+        panel.grid.minor.y = element_blank())+
+  labs(x = NULL, y = "Number of Respondents", 
+       subtitle = index[21,2])
+  
+  
+```
+
+
+
+
+### Third objective: 
+3. To investigate the challanges that hinder the client to move from traditional procurement to designa build
+
+```{r}
+
+#plot for question 22
+ggplot(data = db%>%mutate(q22 = replace(q22,q22==5,4)), 
+       aes(x = q22, fill = q2))+
+    geom_bar(col = 1)+
+  scale_x_discrete(limits = code1)+
+  # scale_fill_discrete(name = "Respondents")+
+  # scale_fill_brewer(name = "Respondents",palette = "Dark2")+
+  # scale_fill_jco(name = "Respondents")+
+  scale_fill_viridis_d(name = "Respondents")+
+  # scale_y_continuous(breaks = seq(0,25,6))+
+  theme_bw()+
+  theme(legend.position = c(0.1,0.85),  
+        legend.background = element_rect(colour = "black"),
+        panel.grid.minor.y = element_blank())+
+  labs(x = NULL, y = "Number of Respondents", 
+       subtitle = index[22,2])
+  
+  
+```
+
+
+### Fourth objective: 
+4. To suggest ways of which design abuild can be used to reduce or eliminate current cost escalation on roadworks projects in tanzania
+
+## Hypotheses
+
+1. Design and Build contract will not improve project performance on roadwork projects in Tanzania
+2. Traditional procurement does not contribute to poor performance on roadwork projects in Tanzania
+3. There no are challenges that hinder the client to move from traditional procurement system to desing and build contract
+
+
+
+
+
