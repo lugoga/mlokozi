@@ -446,7 +446,7 @@ knitr::kable(tb1, caption = "Needed title", col.names = c("","Very low", "Low", 
 ```
 
 
-```{r fig8, fig.cap="Percentage of respondents on challenges hinders to move from traditional procurement system to Design and Build Procurement System caused by lack lack of a) Design and Build specialist b) design-build experience", comment="",warning=FALSE,message=FALSE}
+```{r fig8, fig.cap="Percentage of respondents on role of design and Build procurement system in  a) fixing construction cost and b) minimizing project duration", comment="",warning=FALSE,message=FALSE}
 
 
 fig1 = db%>%group_by(q2,q49)%>%count()%>%
@@ -484,7 +484,10 @@ fig2 = db%>%group_by(q2,q50)%>%count()%>%
   cowplot::plot_grid(fig1, fig2, labels = c("a)", "b)"), label_x = 0.9, label_y =.98 )
   # ggsave("fig4_3.png", dpi = 600)
   
+ 
 ```
+> *stakeholder in the roadwork industry agree that the Design and Build Procurement system plays critical role in helping reduce the time required to complete construction project (Figure \@ref(fig:fig8)a), which reduce the cost of construction (Figure \@ref(fig:fig8)b)*
+
 
 From table \@ref(tab:tab10) and figures \@ref(fig:fig8) the following observations are made:
 81.7% (n= 49) of Professional Consultants, Contractor and Client believe that Design and Build procurement system can reduce cost escalation on roadworks project due fixed Construction cost from the beginning of the project. On the contrary 18.4% (n=11) don't believe
