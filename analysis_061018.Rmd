@@ -5,7 +5,7 @@ date: "October, 06, 2018"
 output: 
       bookdown::word_document2: #html_document2: default
 editor_options: 
-  chunk_output_type: inline
+  chunk_output_type: console
 link-citations: yes
 csl: havard.csl
 bibliography: reference.bib
@@ -14,6 +14,8 @@ bibliography: reference.bib
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
+
+options(digits = 4)
 ```
 
 
@@ -53,9 +55,6 @@ index = data_frame(variable.names, names(db))%>%select(question = `names(db)`, l
 
 ```
 
-# Chapter I
-# chapter II
-# Chapter III
 # Chapter IV
 ## Introduction
 In chapter 3 the research methods and instruments used for collecting data for this study were discussed. This chapter presents the results of stakeholders in construction industry particularly road sector in Tanzania. The data were obtained through a  questionnaire on Design and Build procurement system. Therefore, this chapter present the results of the questionnaire and interpretation will be covered in Chapter 5 of this Study. The outline of chapter four is as follows:
@@ -80,7 +79,7 @@ respondents = data.frame(Respondents = c("A", "B", "C"),
 knitr::kable(respondents, align = "c", caption = "Respondents Profiles")
 ```
 
-Table \@ref(tab:tab2) shows a breakdown of the population (total of Clients, Consultants and Contractors), and percentage of group that questionnaire was sent to and a percentage of those who responded. Of the 150 questionnaires sent to different groups in the construction sector, about 40 percent (60 people) responded (Table 4.2). The contribution of each construction group is presented in figure 4.1. Among 60 respondents 21(14%) were Clients, 21(14%) were professional Consultants and 18 (12%) were Contractors.
+Table \@ref(tab:tab2) shows a breakdown of the population (total of Clients, Consultants and Contractors), and percentage of group that questionnaire was sent to and a percentage of those who responded. Of the 150 questionnaires sent to different groups in the construction sector, about 40 percent (60 people) responded (table \@ref(tab:tab2)). The contribution of each construction group is presented in figure 4.1. Among 60 respondents 21(14%) were Clients, 21(14%) were professional Consultants and 18 (12%) were Contractors.
 
 ### Composition of Respondents (Composition by discipline)
 
@@ -201,7 +200,8 @@ fig4.3a = ggplot(data = db%>%group_by(q8,q2)%>%summarise(perc = n())%>%
   scale_y_continuous(breaks = seq(0,60,10))+
   theme_bw()+
   theme(panel.background = element_rect(colour = 1, fill = NA),
-        axis.text = element_text(colour = 1, size = 10),
+        axis.text.y = element_text(colour = 1, size = 10),
+        axis.text.x = element_text(angle = 15, hjust = .75,colour = 1, size = 10),
         axis.title = element_text(colour = 1, size = 12),
         legend.position = c(0.2,0.85),  
         legend.background = element_rect(colour = "black"),
@@ -217,7 +217,8 @@ fig4.3a = ggplot(data = db%>%group_by(q8,q2)%>%summarise(perc = n())%>%
   scale_y_continuous(breaks = seq(0,50,8))+
   theme_bw()+
   theme(panel.background = element_rect(colour = 1, fill = NA),
-        axis.text = element_text(colour = 1, size = 10),
+        axis.text.y = element_text(colour = 1, size = 10),
+        axis.text.x = element_text(angle = 15, hjust = .75, colour = 1, size = 10),
         axis.title = element_text(colour = 1, size = 12),
         legend.position = "none",  
         legend.background = element_rect(colour = "black"),
@@ -226,9 +227,33 @@ fig4.3a = ggplot(data = db%>%group_by(q8,q2)%>%summarise(perc = n())%>%
   
   
   cowplot::plot_grid(fig4.3a, fig4.3b, labels = c("a)", "b)"), label_x = 0.9, label_y =.98 )
-  # ggsave("fig4_3.png", dpi = 600)
+  # ggsave("fig5.png", dpi = 600)
   
 ```
+
+```{r, echo=FALSE}
+dba = db
+
+dba = dba%>%mutate(q10 = replace(q10,q10 %in% c(3,4), "YES"),
+             q10 = replace(q10,q10 %in% c(1,2), "NO"),
+             q8 = replace(q8,q8 %in% c(3,4), "YES"),
+             q8 = replace(q8,q8 %in% c(1,2), "NO"))
+
+
+table(dba$q8)
+table(dba$q8)%>%prop.table()*100
+table(dba$q8)%>%chisq.test()
+
+table(dba$q10)
+table(dba$q10)%>%prop.table()*100
+table(dba$q10)%>%chisq.test()
+
+# While 83% of respondents agree tha Design and Build is effecient tool for resorce utilization compared to 17% who disagree (Figure \@ref(fig:fig5)a). The percentage of respondents who agree was significant higher than those who disagree (x2=25.78, P<0.05). Similarly, 83 % of respondents said the DB is efficient in roadwork project management (Figure \@ref(fig:fig5)b), which is significant (x2=25.78, P<0.05)
+
+```
+
+While 83% of respondents agree tha Design and Build is effecient tool for resorce utilization compared to 17% who disagree (Figure \@ref(fig:fig5)a). The percentage of respondents who agree was significant higher than those who disagree (x2=25.78, P<0.05). Similarly, 83 % of respondents said the DB is efficient in roadwork project management (Figure \@ref(fig:fig5)b), which is significant (x2=25.78, P<0.05)
+
 
 From Table \@ref(tab:tab7) and figures \@ref(fig:fig5)a and \@ref(fig:fig5)b the following observation were made:
 
@@ -262,12 +287,42 @@ TP does not ensure cost certainty to the owner
                         a = c(26,18,16,2,8,10,6,8,22),
                         sa = c(18,27,32,48,41,37,41,44,25))
 
-knitr::kable(challenges,col.names = c("Traditional Procurement System","Strongly disagree","Disagree","Agree","Strongly agree"), caption = "Challenges of Trational Procurement System on Roadworks", align = "l")
+knitr::kable(challenges,col.names = c("Traditional Procurement System","Strongly disagree","Disagree","Agree","Strongly agree"), caption = "Challenges of Traditional Procurement System on Roadworks", align = "l")
 ```
 
 
+```{r, eval=FALSE}
+variable.names[13]
 
-```{r fig6, fig.cap="Percentage of respondents on challenges caused by Design and Build Procurement System", comment="",warning=F,message=F}
+dba = dba%>%mutate(q13 = replace(q13,q13 ==5,3),
+             q13 = replace(q13,q13 ==4,3),
+             q13 = replace(q13,q13 ==2,1))
+
+dba$q13 = labelled(dba$q13, c(Disagree = 1, Agree = 3))%>%as_factor()
+
+table(dba$q13)
+table(dba$q13)%>%prop.table()*100
+table(dba$q13)%>%chisq.test()
+
+
+dba = dba%>%mutate(q18 = replace(q18,q18 ==5,3),
+             q18 = replace(q18,q18 ==4,3),
+             q18 = replace(q18,q18 ==2,1))
+
+dba$q18 = labelled(dba$q18, c(Disagree = 1, Agree = 3))%>%as_factor()
+
+table(dba$q18)
+table(dba$q18)%>%prop.table()*100
+table(dba$q18)%>%chisq.test()
+
+
+```
+
+While 74.58% of respondents agree there is cost uncertainity when using traditional procurement system does compared to 25.42% who disagree (Figure \@ref(fig:fig6)a). The percentage of respondents who agree was significant higher than those who disagree (x2=14, p < 0.05). Likewise a significant 81% of respondents agreed that there is cost overun caused by increased quantities and price variation (Figure \@ref(fig:fig6)b) (x2 = 22, P<0.05). In general most respondents suggested the traditional procurement system hinders smooth performance of roadwork in Tanzania.
+
+
+
+```{r fig6, fig.cap="Percentage of respondents on challenges caused by Traditional Procurement System a) cost uncertainity & b) cost overun", comment="",warning=F,message=F}
 
 fig4.3a = ggplot(data = db%>%
                    mutate(q13 = replace(q13,q13==5,4)) %>%
@@ -279,7 +334,8 @@ fig4.3a = ggplot(data = db%>%
   # scale_y_continuous(breaks = seq(0,60,10))+
   theme_bw()+
   theme(panel.background = element_rect(colour = 1, fill = NA),
-        axis.text = element_text(colour = 1, size = 10),
+        axis.text.y = element_text(colour = 1, size = 10),
+        axis.text.x = element_text(angle = 15, hjust = .75, colour = 1, size = 10),
         axis.title = element_text(colour = 1, size = 12),
         legend.position = c(0.2,0.85),  
         legend.background = element_rect(colour = "black"),
@@ -297,7 +353,8 @@ fig4.3a = ggplot(data = db%>%
   # scale_y_continuous(breaks = seq(0,50,8))+
   theme_bw()+
   theme(panel.background = element_rect(colour = 1, fill = NA),
-        axis.text = element_text(colour = 1, size = 10),
+        axis.text.y = element_text(colour = 1, size = 10),
+        axis.text.x = element_text(angle = 15, hjust = .75, colour = 1, size = 10),
         axis.title = element_text(colour = 1, size = 12),
         legend.position = "none",  
         legend.background = element_rect(colour = "black"),
@@ -306,9 +363,10 @@ fig4.3a = ggplot(data = db%>%
   
   
   cowplot::plot_grid(fig4.3a, fig4.3b, labels = c("a)", "b)"), label_x = 0.9, label_y =.98 )
-  # ggsave("fig4_3.png", dpi = 600)
+  # ggsave("fig6.png", dpi = 600)
   
 ```
+
 
 From \ref(tab:tab8) and figures \ref(fig:fig6) the following observation are made:
 
@@ -363,12 +421,29 @@ data = data.frame(statement = c("Lack of design expertise",
 knitr::kable(data,col.names = c("", "Very low", "low", "Moderate", "High",  "Very high"), caption = "Challenges hinder to move from Trational Procurement System to Design and Build Procurement System ", align = "l")
 ```
 
+```{r}
+dba$q34 =  labelled(dba$q34, c(very.low = 1, low = 2, 
+                               fair = 3, high = 4, very.high = 5))%>%
+  as_factor()
 
+table(dba$q34)%>%prop.table()*100
+table(dba$q34)%>%chisq.test()
+
+dba$q35 =  labelled(dba$q35, c(very.low = 1, low = 2, 
+                               fair = 3, high = 4, very.high = 5))%>%
+  as_factor()
+
+table(dba$q35)%>%prop.table()*100
+table(dba$q35)%>%chisq.test()
+```
+
+Majority of respondents (60%) responded lack of specialist in design & build procurement as the reason hinders clients to adopt system in their roadwork projects (Figure \@ref(fig:fig6)a) and the percentage was significant (x^2^ = 14, *p* < 0.05). Similarly, more than 70% of respondents pointed out a significant percentage of clients have little experience in design & build (x^2^ = 32, *p* <0.05), which contributes to the utilization of the sytem. These findings suggest that several factors hinders clients to move from traditional to design & build procurement system.
 
 ```{r fig7, fig.cap="Percentage of respondents on challenges hinders to move from traditional procurement system to Design and Build Procurement System caused by lack lack of a) Design and Build specialist b) design-build experience", comment="",warning=FALSE,message=FALSE}
 
-fig1 = db%>%group_by(q2,q34)%>%count()%>%
-  mutate(perc = n/60*100)%>%ggplot(aes(x = q34, y = perc))+geom_col(aes(fill = q2), col = 1)+
+variable.names[34]
+
+fig1 = db%>%group_by(q2,q34)%>%summarise(n = n())%>%na.omit()%>%mutate(perc = n/58*100)%>%ggplot(aes(x = q34, y = perc))+geom_col(aes(fill = q2), col = 1)+
   scale_fill_viridis_d()+
   scale_x_discrete(limits = code2)+
     scale_fill_viridis_d(name = "Respondents")+
@@ -383,8 +458,9 @@ fig1 = db%>%group_by(q2,q34)%>%count()%>%
   labs(x = NULL, y = "Percentage of Respondents") 
 
 
-fig2 = db%>%group_by(q2,q35)%>%count()%>%
-  mutate(perc = n/60*100)%>%ggplot(aes(x = q35, y = perc))+geom_col(aes(fill = q2), col = 1)+
+fig2 = db%>%group_by(q2,q35)%>%summarise(n = n())%>%na.omit()%>%
+  mutate(perc = n/58*100)%>%ggplot(aes(x = q35, y = perc))+
+  geom_col(aes(fill = q2), col = 1)+
   scale_fill_viridis_d()+
   scale_x_discrete(limits = code2)+
     scale_fill_viridis_d(name = "Respondents")+
@@ -400,7 +476,7 @@ fig2 = db%>%group_by(q2,q35)%>%count()%>%
   
   
   cowplot::plot_grid(fig1, fig2, labels = c("a)", "b)"), label_x = 0.9, label_y =.98 )
-  # ggsave("fig4_3.png", dpi = 600)
+  # ggsave("fig7.png", dpi = 600)
   
 ```
 
@@ -482,21 +558,33 @@ fig2 = db%>%group_by(q2,q50)%>%count()%>%
   
   
   cowplot::plot_grid(fig1, fig2, labels = c("a)", "b)"), label_x = 0.9, label_y =.98 )
-  # ggsave("fig4_3.png", dpi = 600)
+  # ggsave("fig8.png", dpi = 600)
   
  
 ```
+
+
 > *stakeholder in the roadwork industry agree that the Design and Build Procurement system plays critical role in helping reduce the time required to complete construction project (Figure \@ref(fig:fig8)a), which reduce the cost of construction (Figure \@ref(fig:fig8)b)*
 
 
 From table \@ref(tab:tab10) and figures \@ref(fig:fig8) the following observations are made:
-81.7% (n= 49) of Professional Consultants, Contractor and Client believe that Design and Build procurement system can reduce cost escalation on roadworks project due fixed Construction cost from the beginning of the project. On the contrary 18.4% (n=11) don't believe
-88.3% (n=53) of Professional Consultants, Contractor and Client believe that Design and Build procurement system can reduce cost escalation on roadworks project since cost is minimized due to shortening of project duration by engaging D&B Contractor during design stage. On the contrary 11.7% (n=11) don't believe
-83.3% (n=50) of Professional Consultants, Contractor and Client believe that Design and Build procurement system can reduce cost escalation on roadworks project through fixed schedule due to absence of design errors, design omission. On the contrary 16.7% (n=10) don't believe
-89.8% (n= 53) of Professional Consultants, Contractor and Client believe that Design and Build procurement system can reduce cost escalation on roadworks project due to Schedule reduction and promote fast-tracking. On the contrary 10.2% (n=3) don't believe
-93.3% (n= 56) of Professional Consultants, Contractor and Client believe that Design and Build procurement system can reduce cost escalation on roadworks project since Claims are reduced since design errors and omission are responsibility of the Contractor. On the contrary 6.7% (n=4) don't believe
-96.7% (n= 58) of Professional Consultants, Contractor and Client believe that Design and Build procurement system can reduce cost escalation on roadworks project since it promotes constructability and innovations as it inject the Contractor knowledge from designing stage. On the contrary 3.3 % (n=2) don't believe
-96.7% (n=58) of Professional Consultants, Contractor and Client believe that Design and Build procurement system can reduce cost escalation on roadworks project since it is Quick delivery method as it allows the overlapping of Design and Construction process. On the contrary 3.3 % (n=2) don't believe
-91.7% (n=55) of Professional Consultants, Contractor and Client believe that Design and Build procurement system can reduce cost escalation on roadworks project since design errors are minimized hence no increase in project cost. On the contrary 8.3 % (n=5) don't believe
+
++ 81.7% (n= 49) of Professional Consultants, Contractor and Client believe that Design and Build procurement system can reduce cost escalation on roadworks project due fixed Construction cost from the beginning of the project. On the contrary 18.4% (n=11) don't believe.
+
++ 88.3% (n=53) of Professional Consultants, Contractor and Client believe that Design and Build procurement system can reduce cost escalation on roadworks project since cost is minimized due to shortening of project duration by engaging D&B Contractor during design stage. On the contrary 11.7% (n=11) don't believe.
+
++ 83.3% (n=50) of Professional Consultants, Contractor and Client believe that Design and Build procurement system can reduce cost escalation on roadworks project through fixed schedule due to absence of design errors, design omission. On the contrary 16.7% (n=10) don't believe.
+
++ 89.8% (n= 53) of Professional Consultants, Contractor and Client believe that Design and Build procurement system can reduce cost escalation on roadworks project due to Schedule reduction and promote fast-tracking. On the contrary 10.2% (n=3) don't believe.
+
++ 93.3% (n= 56) of Professional Consultants, Contractor and Client believe that Design and Build procurement system can reduce cost escalation on roadworks project since Claims are reduced since design errors and omission are responsibility of the Contractor. On the contrary 6.7% (n=4) don't believe.
+
++ 96.7% (n= 58) of Professional Consultants, Contractor and Client believe that Design and Build procurement system can reduce cost escalation on roadworks project since it promotes constructability and innovations as it inject the Contractor knowledge from designing stage. On the contrary 3.3 % (n=2) don't believe.
+
++ 96.7% (n=58) of Professional Consultants, Contractor and Client believe that Design and Build procurement system can reduce cost escalation on roadworks project since it is Quick delivery method as it allows the overlapping of Design and Construction process. On the contrary 3.3 % (n=2) don't believe.
+
++ 91.7% (n=55) of Professional Consultants, Contractor and Client believe that Design and Build procurement system can reduce cost escalation on roadworks project since design errors are minimized hence no increase in project cost. On the contrary 8.3 % (n=5) don't believe
 
 ## Reference
+
+
